@@ -23,7 +23,9 @@ Un aperçu de l'architecture proposé est illustré ci-dessous.
 ### Plan d'action
   
 
-Mon approche est de dockeriser l'API en premier, puis de déployer l'ensemble de l'infrastructure via un fichier docker-compose.
+Adopter une procedure iterative pour creation des modules ainsi  : 
+je vais commencer tout d'abord par creer le module ec2 qui est la brique de base de 'linfrastructure puis je vais creer 
+le security group puis et ei (elastic ip ) puis enfin ebs pour le stockage.
 
 
 ### Étape 1: Création de l'image de l'API
