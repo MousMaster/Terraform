@@ -51,7 +51,7 @@ variable "maintainer" {
   default = "mous"
 }
 ```
-*La variable "maintainer" aura pour valeur par defaut "mous" et pour type "string" *
+*La variable "maintainer" aura pour valeur par defaut "mous" et pour type "string"*
 
 
 ### Étape 1: Module "ec2module"
