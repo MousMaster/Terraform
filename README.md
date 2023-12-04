@@ -28,9 +28,10 @@ je vais commencer tout d'abord par creer le module ec2 qui est la brique de base
 le security group puis et ei (elastic ip ) puis enfin ebs pour le stockage.
 
 
-### Étape 1: Création de l'image de l'API
+### Étape 1: Module "ec2module"
 
-Apres avoir creé le dockerfile on la lance les commandes suivantes : 
+Il sera composé de trois fichier un "variables.tf" decrivant les variables (valeur par défaut, type de variable), le fichier output cotenant les varaibles du modules aux quelles on fait appel en dehors du module, et enfin le fichier "main.tf" contenant les instruction necessaire quand la creation de l'objet ec2.
+
 
 ```console
 docker build -t student-list-api-image . student-api 
