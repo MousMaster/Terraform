@@ -2,15 +2,15 @@
 
 ### Inntroduction
 
-Dans le contexte de ce projet, dont les spécifications sont disponibles  [ici](https://github.com/diranetafen/student-list.git "here"). 
+Dans le contexte de ce projet, dont les spécifications sont disponibles  [ici](https://github.com/MousMaster/Terraform/blob/main/consignes.png "here"). 
 
-J'ai conceptualisé une architecture AWS pour faciliter pour repondre a la problematique donnee.
+J'ai conceptualisé une architecture AWS pour faciliter et répondre à la problematique donnée.
 
-L'infrastructure en question se compose de plusieurs module AWS:
+L'infrastructure en question se compose de plusieurs modules AWS:
  
 1: Une EC2 : une machine virtuelle  ubuntu-bionic  
-2: Un ei : une adresse ip publique 
-3: Un ebs : un module de stockage amovible 
+2: Un EI : une adresse ip publique 
+3: Un EBS : un module de stockage amovible 
 4: Un security group : un parfeu 
 
 Un aperçu de l'architecture proposé est illustré ci-dessous.
@@ -23,15 +23,17 @@ Un aperçu de l'architecture proposé est illustré ci-dessous.
 ### Plan d'action
   
 
-Adopter une procedure iterative pour creation des modules ainsi  : 
-je vais commencer tout d'abord par creer le module ec2 qui est la brique de base de 'linfrastructure puis je vais creer 
-le security group puis et ei (elastic ip ) puis enfin ebs pour le stockage.
+Adopter une procédure itérative pour la création des modules ainsi  : 
+
+je vais commencer tout d'abord par créer le module EC2 qui est la brique de base de l'infrastructure puis je vais créer 
+le security group puis et EI (elastic ip ) puis enfin EBS pour le stockage.
 
 
 ### Structure des modules 
+
 Le fichier "main.tf" comprend la configuration de chaque module respectivement. 
-Le fichier "output.tf" comprend les variables du module qui seront exporte pour pouvoir etre utilise dans d'autre module.
-Le fichier "variables.tf" comprend les parametres par defaut de chaque variable (type + valeur).
+Le fichier "output.tf" comprend les variables du module qui seront exportées pour pouvoir être utilisées dans d'autres modules.
+Le fichier "variables.tf" comprend les parametres par défauts de chaque variable (type + valeur).
 
 
 Fichier "output.tf"
@@ -41,7 +43,7 @@ output "output_ec2_id" {
     value = aws_instance.myec2.id
   }
 ```
-*La variable sera exporte sous le "nom output_ec2_id" elle comprendra l'id de l'ec2 en l'occurence celui de  "aws_instance.myec2"*
+*La variable sera exportée sous le "nom output_ec2_id" elle comprendra l'id de l'EC2 en l'occurence celui de  "aws_instance.myec2"*
 
 Fichier "variables.tf" 
 
@@ -51,7 +53,7 @@ variable "maintainer" {
   default = "mous"
 }
 ```
-*La variable "maintainer" aura pour valeur par defaut "mous" et pour type "string"*
+*La variable "maintainer" aura pour valeur par défaut "mous" et pour type "string"*
 
 
 ### Étape 1: Module "ec2module"
