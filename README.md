@@ -54,84 +54,55 @@ variable "maintainer" {
 *La variable "maintainer" aura pour valeur par defaut "mous" et pour type "string" *
 
 
-
-
 ### Étape 1: Module "ec2module"
 
-Il sera composé de trois fichier un "variables.tf" decrivant les variables (valeur par défaut, type de variable), le fichier output cotenant les varaibles du modules aux quelles on fait appel en dehors du module, et enfin le fichier "main.tf" contenant les instruction necessaire quand la creation de l'objet ec2.
+Il sera composé de trois fichier un "variables.tf" , le fichier "output.tf" , et enfin le fichier "main.tf".
+
+Le fichier "main.tf"
+
+Ce code Terraform récupère la dernière image AMI d'Ubuntu Bionic 18.04 pour une instance EC2 via la ressource data "aws_ami". La ressource aws_instance crée une instance EC2 en utilisant cette AMI, spécifiant le type d'instance, la clé SSH, les tags, le groupe de sécurité, et la zone de disponibilité à partir de variables. De plus, elle définit des paramètres du volume racine, et utilise des provisioners local-exec pour écrire l'adresse IP publique dans un fichier et remote-exec pour installer et démarrer Nginx via SSH. 
 
 
+### Étape 2: Module "sgmodule"
 
 
-```console
-docker run -v ./student_age.json:/data/student_age.json -p 8082:5000 student-api 
-```
+Le code fourni configure un groupe de sécurité AWS (aws_security_group) qui autorise le trafic entrant sur les ports HTTP (80), HTTPS (443) et SSH (22). Il crée un groupe de sécurité nommé d'après le mainteneur spécifié dans les variables Terraform. Les règles ingress définissent des autorisations pour le trafic entrant, permettant à tout le monde (0.0.0.0/0) d'accéder aux ports HTTP et HTTPS, ainsi qu'au port SSH pour une connexion sécurisée.
 
-*Cette commande déploie l'image sous forme de conteneur, en lui associant un volume et en exposant le port 8082. *
+La règle egress autorise tout le trafic sortant vers toutes les destinations et tous les ports. L'ajout de la règle pour le protocole SSH, bien que non spécifié dans les consignes initiales, semble être une adaptation pour faciliter l'utilisation du provisioner remote-exec via SSH pour des opérations de configuration à distance sur l'instance EC2. Cependant, l'ouverture de l'accès SSH à toutes les adresses IP (0.0.0.0/0) présente un risque de sécurité, et il est recommandé de limiter cet accès à des adresses IP spécifiques pour renforcer la sécurité de l'infrastructure.
 
 
-```console
- curl -u toto:python -X GET http://127.0.0.1:50000/pozos/api/v1.0/get_student_ages
- ```
+### Étape 3: Module "ippublique"
 
- *Cette commande teste la connexion à l'API. Les identifiants "toto" et "python" sont utilisés pour l'authentification HTTP basique.*
- *
+Le code présent utilise Terraform pour définir une ressource AWS EIP (Elastic IP). Dans cet exemple, la ressource EIP est configurée avec l'option vpc = true, ce qui spécifie que l'Elastic IP doit être associée à une instance dans un Virtual Private Cloud (VPC). L'utilisation de vpc = true permet de créer une adresse IP élastique pour une utilisation dans un environnement VPC spécifique, ce qui est souvent nécessaire pour des instances EC2 exécutées dans un VPC. Cela permet à cette adresse IP de fonctionner dans un contexte de réseau VPC, offrant ainsi une isolation réseau et des fonctionnalités de sécurité améliorées pour les ressources AWS.
 
-![project](https://github.com/MousMaster/Docker/blob/master/images/curl_ok.png)
-
-On test a present si l'api repond et renvoie la liste des étudiants, confirmant ainsi le bon fonctionnement de l'API.
+### Étape 4: Module "ebsmodule"
 
 
+Le code fourni utilise Terraform pour définir une ressource AWS EBS Volume (Elastic Block Store). Dans cet extrait, la ressource EBS Volume est configurée pour être créée dans la zone de disponibilité "us-east-1b" spécifiée. La taille du volume est définie à l'aide d'une variable Terraform nommée ebssize.
+
+De plus, des tags sont associés à ce volume EBS via la clé "Name", qui utilise la valeur "ebs-${var.maintainer}". Cela permet de faciliter l'identification et la gestion des ressources en attribuant des étiquettes (tags) pour une meilleure organisation et traçabilité au sein de votre environnement AWS.
 
 
+### Étape 5 : Module principal "dev"
 
-*On arrive a reccuperer la list des etudiants on en conclue que l'api est fonctionnelle*
+Dans ce code Terraform, le module principal joue un rôle central en orchestrant différents modules spécialisés pour construire l'infrastructure complète sur AWS.
 
+Module Principal (main.tf) :
 
-### Étape 2: Mise en place du docker-compose
+Ce fichier agit comme un orchestrateur principal, appelant et intégrant les fonctionnalités spécifiques offertes par d'autres modules.
+Il utilise les modules spécialisés (sg, ebs, ip_public, ec2) pour gérer des aspects spécifiques de l'infrastructure.
+Utilisation des Modules :
 
+Chaque module est dédié à une tâche particulière :
+module.sg gère la création du groupe de sécurité.
+module.ebs est responsable de la gestion des volumes EBS.
+module.ip_public gère l'attribution et la configuration des adresses IP publiques.
+module.ec2 déploie et configure des instances EC2.
+Intégration des Ressources :
 
+Le module principal utilise les sorties générées par chaque module spécialisé (output_sg_name, output_eip, etc.) comme entrées pour d'autres modules ou ressources AWS (aws_eip_association, aws_volume_attachment).
+Par exemple, module.ec2 utilise les valeurs de sortie de module.ip_public et module.sg pour configurer correctement l'instance EC2 avec une adresse IP publique et un groupe de sécurité approprié.
+Organisation Modulaire :
 
-Après avoir généré le fichier docker-compose, on modifie la ligne :
-
-```console
-$url = 'http://<api_ip_or_name:port>/pozos/api/v1.0/get_student_ages';
-
-```
-par :
-           
-```console
-$url = 'http://student-api:5000/pozos/api/v1.0/get_student_ages';
-```
-
-Cela permet au frontend de pointer vers le backend. Remplacez <api_ip_or_name> par le nom du conteneur (student-api) et <port> par 5000.
-
-Puis on test si l'on arrive a reccuperer la liste des etudiants a partir du frontend :
-
-![project](https://github.com/MousMaster/Docker/blob/master/images/we_site_ok.png)
-  
-
-### Étape 3: Déploiement d'un registre Docker local
-
-
-Pour cette étape, j'ai opté pour une approche "Infrastructure as Code". Une fois le registre lancé,j'ai lancé les commandes suivantes : 
-
-```console
-docker image tag student-list-api localhost:51000/v2/student_api
-```
-
-* Cette commande tag l'image, étape nécessaire avant de la charger sur un registre Docker. *
-
-```console
-docker push localhost:51000/v2/student_api                      
-```
-* Cette commande charge l'image créée précédemment sur le registre Docker local.
- *
-
-
-
-![project](https://github.com/MousMaster/Docker/blob/master/images/push_ok.png)
-
-![project](https://github.com/MousMaster/Docker/blob/master/images/push_front_ok.png)
-
-Les captures d'écran fournies montrent que les étapes se sont déroulées avec succès.
+Cette approche modulaire permet de découper l'infrastructure en composants indépendants, simplifiant la gestion et la maintenance.
+Chaque module se concentre sur une fonction spécifique, favorisant la réutilisation et la facilité de mise à jour.
