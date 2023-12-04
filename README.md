@@ -28,18 +28,32 @@ je vais commencer tout d'abord par creer le module ec2 qui est la brique de base
 le security group puis et ei (elastic ip ) puis enfin ebs pour le stockage.
 
 
-### Étape 1: Module "ec2module"
+### Structure des modules 
+Le fichier "main.tf" comprend la configuration de chaque module respectivement. 
+Le fichier "output.tf" comprend les variables du module qui seront exporte pour pouvoir etre utilise dans d'autre module.
+Le fichier "variables.tf" comprend les parametres par defaut de chaque variable (type + valeur).
 
-Il sera composé de trois fichier un "variables.tf" decrivant les variables (valeur par défaut, type de variable), le fichier output cotenant les varaibles du modules aux quelles on fait appel en dehors du module, et enfin le fichier "main.tf" contenant les instruction necessaire quand la creation de l'objet ec2.
 
-
+Fichier "output.tf"
 
 ```console
 output "output_ec2_id" {
     value = aws_instance.myec2.id
   }
 ```
-*Apercu du contenu d'un fichier output *
+*La variable sera exporte sous le "nom output_ec2_id" elle comprendra l'id de l'ec2 en l'occurence "aws_instance.myec2"*
+
+
+
+
+
+
+### Étape 1: Module "ec2module"
+
+Il sera composé de trois fichier un "variables.tf" decrivant les variables (valeur par défaut, type de variable), le fichier output cotenant les varaibles du modules aux quelles on fait appel en dehors du module, et enfin le fichier "main.tf" contenant les instruction necessaire quand la creation de l'objet ec2.
+
+
+
 
 ```console
 docker run -v ./student_age.json:/data/student_age.json -p 8082:5000 student-api 
