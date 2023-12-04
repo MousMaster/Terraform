@@ -109,4 +109,10 @@ Chaque module se concentre sur une fonction spécifique, favorisant la réutilis
 
 ## Conclusion :
 
+Aperçu du résultat : 
+
+![project](https://github.com/MousMaster/Terraform/blob/main/nginx.png)
+
+
 Cette expérience avec Terraform m'a permis de comprendre comment organiser et déployer une infrastructure sur AWS de manière modulaire et reproductible. J'ai appris à utiliser des modules Terraform pour décrire différents aspects de l'infrastructure AWS, en les reliant de manière cohérente pour créer un environnement complet. Cela a renforcé ma compréhension des bonnes pratiques en matière de gestion des ressources cloud et d'orchestration d'infrastructures complexes à l'aide d'outils d'automatisation comme Terraform.
+
