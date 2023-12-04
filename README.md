@@ -41,9 +41,17 @@ output "output_ec2_id" {
     value = aws_instance.myec2.id
   }
 ```
-*La variable sera exporte sous le "nom output_ec2_id" elle comprendra l'id de l'ec2 en l'occurence "aws_instance.myec2"*
+*La variable sera exporte sous le "nom output_ec2_id" elle comprendra l'id de l'ec2 en l'occurence celui de  "aws_instance.myec2"*
 
+Fichier "variables.tf" 
 
+```
+variable "maintainer" {
+  type    = string
+  default = "mous"
+}
+```
+*La variable "maintainer" aura pour valeur par defaut "mous" et pour type "string" *
 
 
 
