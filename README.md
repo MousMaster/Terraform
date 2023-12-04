@@ -45,7 +45,7 @@ output "output_ec2_id" {
 
 Fichier "variables.tf" 
 
-```
+```console
 variable "maintainer" {
   type    = string
   default = "mous"
