@@ -15,7 +15,7 @@ L'infrastructure en question se compose de plusieurs module AWS:
 
 Un aperçu de l'architecture proposé est illustré ci-dessous.
 
-![project](https://github.com/MousMaster/Docker/blob/master/architecture.png)
+![project](https://github.com/MousMaster/Terraform/blob/master/architecture.png)
 
 
 ------------
