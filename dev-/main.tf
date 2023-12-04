@@ -9,8 +9,8 @@ terraform {
     bucket     = "devops-mous"
     key        = "mous.tfstate"
     region     = "us-east-1"
-    access_key = "AKIAXFMH3KJ5ZIS2CXUA"
-    secret_key = "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"
+    shared_credentials_files = ["../../aws_credentials"]
+
 
   }
 }
