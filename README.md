@@ -33,10 +33,13 @@ le security group puis et ei (elastic ip ) puis enfin ebs pour le stockage.
 Il sera composé de trois fichier un "variables.tf" decrivant les variables (valeur par défaut, type de variable), le fichier output cotenant les varaibles du modules aux quelles on fait appel en dehors du module, et enfin le fichier "main.tf" contenant les instruction necessaire quand la creation de l'objet ec2.
 
 
+
 ```console
-docker build -t student-list-api-image . student-api 
+output "output_ec2_id" {
+    value = aws_instance.myec2.id
+  }
 ```
-*Cette commande génère l'image Docker.*
+*Apercu du contenu d'un fichier output *
 
 ```console
 docker run -v ./student_age.json:/data/student_age.json -p 8082:5000 student-api 
