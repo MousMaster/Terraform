@@ -87,7 +87,6 @@ De plus, des tags sont associés à ce volume EBS via la clé "Name", qui utilis
 
 Dans ce code Terraform, le module principal joue un rôle central en orchestrant différents modules spécialisés pour construire l'infrastructure complète sur AWS.
 
-Module Principal (main.tf) :
 
 Ce fichier agit comme un orchestrateur principal, appelant et intégrant les fonctionnalités spécifiques offertes par d'autres modules.
 Il utilise les modules spécialisés (sg, ebs, ip_public, ec2) pour gérer des aspects spécifiques de l'infrastructure.
@@ -106,3 +105,24 @@ Organisation Modulaire :
 
 Cette approche modulaire permet de découper l'infrastructure en composants indépendants, simplifiant la gestion et la maintenance.
 Chaque module se concentre sur une fonction spécifique, favorisant la réutilisation et la facilité de mise à jour.
+
+
+### Conclusion : 
+
+L'ensemble de l'infrastructure créée avec Terraform vise à déployer et à gérer des ressources AWS pour former une architecture complète. Cette infrastructure se compose d'une instance EC2, d'un groupe de sécurité, d'une adresse IP publique, et d'un volume EBS, orchestrés à l'aide de modules Terraform.
+
+Résumé de l'infrastructure :
+
+Instance EC2 : Déploiement d'une instance EC2 de type "t2.micro" dans la région AWS "us-east-1".
+Groupe de Sécurité : Création d'un groupe de sécurité configuré pour autoriser le trafic sur les ports 80 (HTTP), 443 (HTTPS), et 22 (SSH) depuis toutes les adresses IP.
+Adresse IP Publique : Attribution d'une adresse IP élastique à l'instance EC2.
+Volume EBS : Création d'un volume EBS dans la zone de disponibilité "us-east-1b".
+Ce que j'ai appris :
+
+Modularité avec Terraform : L'utilisation de modules Terraform permet de découper l'infrastructure en composants indépendants, simplifiant ainsi la gestion et la maintenance.
+Interconnexion des Ressources : Les modules interagissent les uns avec les autres à travers les sorties (outputs) et les entrées (inputs) pour créer une infrastructure interconnectée.
+Orchestration d'Infrastructures AWS : La mise en place d'une infrastructure sur AWS avec Terraform nécessite la gestion fine des ressources et de leurs dépendances.
+
+## Conclusion :
+
+Cette expérience avec Terraform m'a permis de comprendre comment organiser et déployer une infrastructure sur AWS de manière modulaire et reproductible. J'ai appris à utiliser des modules Terraform pour décrire différents aspects de l'infrastructure AWS, en les reliant de manière cohérente pour créer un environnement complet. Cela a renforcé ma compréhension des bonnes pratiques en matière de gestion des ressources cloud et d'orchestration d'infrastructures complexes à l'aide d'outils d'automatisation comme Terraform.
