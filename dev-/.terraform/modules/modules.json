@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"ebs","Source":"../modules/ebsmodule","Dir":"../modules/ebsmodule"},{"Key":"ec2","Source":"../modules/ec2module","Dir":"../modules/ec2module"},{"Key":"ip_public","Source":"../modules/ippublicmodule","Dir":"../modules/ippublicmodule"},{"Key":"sg","Source":"../modules/sgmodule","Dir":"../modules/sgmodule"}]}
